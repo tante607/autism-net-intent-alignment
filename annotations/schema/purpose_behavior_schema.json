@@ -1,1 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Purpose-Behavior Alignment Example",
+  "type": "object",
+  "required": [
+    "id",
+    "utterance",
+    "context",
+    "purpose",
+    "behavior",
+    "alignment",
+    "meta"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique example ID"
+    },
+    "utterance": {
+      "type": "object",
+      "required": ["speaker", "text"],
+      "properties": {
+        "speaker": {
+          "type": "string",
+          "enum": ["child", "adult", "other"]
+        },
+        "text": {
+          "type": "string"
+        },
+        "timestamp_sec": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "required": ["setting", "prompt"],
+      "properties": {
+        "setting": {
+          "type": "string",
+          "description": "High-level scenario (e.g., play, snack, scooter, classroom)"
+        },
+        "prompt": {
+          "type": "string",
+          "description": "What happened immediately before the utterance (adult question / situation)"
+        },
+        "observations": {
+          "type": "string",
+          "description": "Optional notes about the interaction context"
+        }
+      }
+    },
+    "purpose": {
+      "type": "object",
+      "required": ["label", "evidence"],
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Functional purpose category"
+        },
+        "evidence": {
+          "type": "string",
+          "description": "Short rationale grounded in context/utterance (not mind-reading)"
+        }
+      }
+    },
+    "behavior": {
+      "type": "object",
+      "required": ["label", "modality"],
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Observed behavior category"
+        },
+        "modality": {
+          "type": "string",
+          "enum": ["speech", "gesture", "motor", "mixed", "unknown"]
+        },
+        "evidence": {
+          "type": "string",
+          "description": "Optional note about what was observed"
+        }
+      }
+    },
+    "alignment": {
+      "type": "object",
+      "required": ["label"],
+      "properties": {
+        "label": {
+          "type": "string",
+          "enum": ["aligned", "misaligned", "uncertain"]
+        },
+        "reason": {
+          "type": "string",
+          "description": "Why aligned/misaligned/uncertain"
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "required": ["source", "privacy"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "e.g., talkbank, self_recorded, synthetic"
+        },
+        "privacy": {
+          "type": "string",
+          "enum": ["anonymized", "public", "restricted"]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
 
