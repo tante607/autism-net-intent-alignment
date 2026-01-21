@@ -49,3 +49,23 @@ Behavior = what was observed (speech/gesture/motor/mixed).
 
 - **PUR_PLAY**  
   The speaker aims to engage in play-oriented, imaginative, or entertainment-driven interaction.
+
+  ## Behavior label set (v0.1)
+
+Behavior labels describe observable manifestations in the interaction.
+
+- **BEH_SPEECH**  
+  Observable spoken verbal output with linguistic content.
+
+- **BEH_GESTURE**  
+  Non-verbal communicative movements such as pointing or showing.
+
+- **BEH_MOTOR**  
+  Physical actions not primarily communicative.
+
+- **BEH_MIXED**  
+  A combination of speech and non-verbal behavior within the same interaction unit.
+
+- **BEH_NONE**  
+  No clear observable behavior within the annotation window.
+
