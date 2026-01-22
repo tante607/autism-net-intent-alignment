@@ -52,37 +52,56 @@
       }
     },
     "purpose": {
-      "type": "object",
-      "required": ["label", "evidence"],
-      "properties": {
-        "label": {
-          "type": "string",
-          "description": "Functional purpose category"
-        },
-        "evidence": {
-          "type": "string",
-          "description": "Short rationale grounded in context/utterance (not mind-reading)"
-        }
-      }
+  "type": "object",
+  "required": ["label", "evidence"],
+  "properties": {
+    "label": {
+      "type": "string",
+      "description": "Functional purpose category",
+      "enum": [
+        "PUR_REQUEST",
+        "PUR_PROTEST",
+        "PUR_INFORM",
+        "PUR_QUESTION",
+        "PUR_SOCIAL",
+        "PUR_REGULATE",
+        "PUR_DIRECT",
+        "PUR_PLAY"
+      ]
     },
+    "evidence": {
+      "type": "string",
+      "description": "Short rationale grounded in context/utterance (not mind-reading)"
+    }
+  }
+},
+
     "behavior": {
-      "type": "object",
-      "required": ["label", "modality"],
-      "properties": {
-        "label": {
-          "type": "string",
-          "description": "Observed behavior category"
-        },
-        "modality": {
-          "type": "string",
-          "enum": ["speech", "gesture", "motor", "mixed", "unknown"]
-        },
-        "evidence": {
-          "type": "string",
-          "description": "Optional note about what was observed"
-        }
-      }
+  "type": "object",
+  "required": ["label", "modality"],
+  "properties": {
+    "label": {
+      "type": "string",
+      "description": "Observed behavior category",
+      "enum": [
+        "BEH_SPEECH",
+        "BEH_GESTURE",
+        "BEH_MOTOR",
+        "BEH_MIXED",
+        "BEH_NONE"
+      ]
     },
+    "modality": {
+      "type": "string",
+      "enum": ["speech", "gesture", "motor", "mixed", "unknown"]
+    },
+    "evidence": {
+      "type": "string",
+      "description": "Optional note about what was observed"
+    }
+  }
+},
+
     "alignment": {
       "type": "object",
       "required": ["label"],
