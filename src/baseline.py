@@ -57,6 +57,34 @@ def accuracy(y_true: List[str], y_pred: List[str]) -> float:
         return 0.0
     correct = sum(1 for t, p in zip(y_true, y_pred) if t == p)
     return correct / len(y_true)
+    def macro_f1(y_true: List[str], y_pred: List[str]) -> float:
+    """
+    Macro-F1 over labels present in y_true.
+    For each label:
+      precision = tp / (tp + fp)
+      recall    = tp / (tp + fn)
+      f1        = 2pr / (p + r)
+    Then average across labels.
+    """
+    if len(y_true) != len(y_pred):
+        raise ValueError("y_true and y_pred must have the same length.")
+    if not y_true:
+        return 0.0
+
+    labels = sorted(set(y_true))
+    f1s: List[float] = []
+
+    for lab in labels:
+        tp = sum(1 for t, p in zip(y_true, y_pred) if t == lab and p == lab)
+        fp = sum(1 for t, p in zip(y_true, y_pred) if t != lab and p == lab)
+        fn = sum(1 for t, p in zip(y_true, y_pred) if t == lab and p != lab)
+
+        precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
+        recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
+        f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0
+        f1s.append(f1)
+
+    return sum(f1s) / len(f1s)
 
 
 def main(data_path: Path = DEFAULT_DATA_PATH) -> None:
