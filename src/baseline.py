@@ -112,8 +112,9 @@ def main(data_path: Path = DEFAULT_DATA_PATH) -> None:
     pred_behavior = [maj_behavior] * len(behaviors)
 
     print("\nBaselines:")
-    print(f"  Majority purpose:  {maj_purpose}  | accuracy = {accuracy(purposes, pred_purpose):.3f}")
-    print(f"  Majority behavior: {maj_behavior}  | accuracy = {accuracy(behaviors, pred_behavior):.3f}")
+    print(f"  Majority purpose:  {maj_purpose}  | acc = {accuracy(purposes, pred_purpose):.3f} | macro-F1 = {macro_f1(purposes, pred_purpose):.3f}")
+    print(f"  Majority behavior: {maj_behavior}  | acc = {accuracy(behaviors, pred_behavior):.3f} | macro-F1 = {macro_f1(behaviors, pred_behavior):.3f}")
+
 
 
 if __name__ == "__main__":
