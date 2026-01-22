@@ -1,1 +1,93 @@
+"""
+Minimal baseline for Purpose–Behavior Alignment (v0.1)
+
+Reads JSONL examples, prints label distributions, and runs a simple baseline:
+- Purpose baseline: always predict the most frequent purpose label in the dataset.
+- Behavior baseline: always predict the most frequent behavior label in the dataset.
+
+This is intentionally simple and fully interpretable.
+"""
+
+from __future__ import annotations
+
+import json
+from collections import Counter
+from pathlib import Path
+from typing import Any, Dict, List, Tuple
+
+
+DEFAULT_DATA_PATH = Path("annotations/examples/examples_v0_1.jsonl")
+
+
+def load_jsonl(path: Path) -> List[Dict[str, Any]]:
+    if not path.exists():
+        raise FileNotFoundError(f"Cannot find data file: {path.as_posix()}")
+    data: List[Dict[str, Any]] = []
+    with path.open("r", encoding="utf-8") as f:
+        for line_no, line in enumerate(f, start=1):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                data.append(json.loads(line))
+            except json.JSONDecodeError as e:
+                raise ValueError(f"Invalid JSON on line {line_no}: {e}") from e
+    return data
+
+
+def get_labels(examples: List[Dict[str, Any]]) -> Tuple[List[str], List[str]]:
+    purposes: List[str] = []
+    behaviors: List[str] = []
+    for ex in examples:
+        purposes.append(ex["purpose"]["label"])
+        behaviors.append(ex["behavior"]["label"])
+    return purposes, behaviors
+
+
+def majority_label(labels: List[str]) -> str:
+    if not labels:
+        raise ValueError("Empty label list.")
+    return Counter(labels).most_common(1)[0][0]
+
+
+def accuracy(y_true: List[str], y_pred: List[str]) -> float:
+    if len(y_true) != len(y_pred):
+        raise ValueError("y_true and y_pred must have the same length.")
+    if not y_true:
+        return 0.0
+    correct = sum(1 for t, p in zip(y_true, y_pred) if t == p)
+    return correct / len(y_true)
+
+
+def main(data_path: Path = DEFAULT_DATA_PATH) -> None:
+    examples = load_jsonl(data_path)
+    purposes, behaviors = get_labels(examples)
+
+    purpose_counts = Counter(purposes)
+    behavior_counts = Counter(behaviors)
+
+    print(f"Loaded {len(examples)} examples from {data_path.as_posix()}\n")
+
+    print("Purpose label distribution:")
+    for label, cnt in purpose_counts.most_common():
+        print(f"  {label:12s}  {cnt}")
+
+    print("\nBehavior label distribution:")
+    for label, cnt in behavior_counts.most_common():
+        print(f"  {label:12s}  {cnt}")
+
+    # Baselines (majority class)
+    maj_purpose = majority_label(purposes)
+    maj_behavior = majority_label(behaviors)
+
+    pred_purpose = [maj_purpose] * len(purposes)
+    pred_behavior = [maj_behavior] * len(behaviors)
+
+    print("\nBaselines:")
+    print(f"  Majority purpose:  {maj_purpose}  | accuracy = {accuracy(purposes, pred_purpose):.3f}")
+    print(f"  Majority behavior: {maj_behavior}  | accuracy = {accuracy(behaviors, pred_behavior):.3f}")
+
+
+if __name__ == "__main__":
+    main()
 
